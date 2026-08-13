@@ -2,29 +2,498 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тренажер митного тестування</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Інтерактивний тренажер тестування</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; color: #333; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h1, h2 { color: #2c3e50; text-align: center; }
-        .setup-box { background: #eef2f5; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        label { display: block; margin: 10px 0; cursor: pointer; font-size: 16px; }
-        .btn { display: block; width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 20px; font-weight: bold; }
-        .btn:hover { background: #2980b9; }
-        .question-card { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
-        .option { padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        .option:hover { background: #f9f9f9; }
-        .correct { background: #d4edda !important; border-color: #28a745 !important; color: #155724; font-weight: bold; }
-        .incorrect { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24; text-decoration: line-through; }
-        #results { font-size: 22px; font-weight: bold; text-align: center; margin-top: 20px; color: #2c3e50; }
+        :root {
+            --bg-color: #f0f4f8;
+            --container-bg: #ffffff;
+            --text-color: #2d3748;
+            --heading-color: #1a202c;
+            --box-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --option-hover: #f1f5f9;
+            --selected-bg: #e0e7ff;
+            --selected-border: #6366f1;
+            --btn-secondary: #64748b;
+            --btn-secondary-hover: #475569;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --container-bg: #1e293b;
+            --text-color: #e2e8f0;
+            --heading-color: #f8fafc;
+            --box-bg: #090d16;
+            --border-color: #334155;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --option-hover: #334155;
+            --selected-bg: #312e81;
+            --selected-border: #818cf8;
+            --btn-secondary: #475569;
+            --btn-secondary-hover: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            padding: 10px;
+            transition: background 0.3s, color 0.3s;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--container-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            background: var(--box-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary);
+        }
+
+        h1, h2 {
+            color: var(--heading-color);
+            text-align: center;
+            margin-top: 0;
+        }
+
+        h1 { font-size: 22px; margin-bottom: 15px; }
+
+        .setup-box {
+            background: var(--box-bg);
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .setup-box h3 {
+            margin-top: 0;
+            color: var(--heading-color);
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            cursor: pointer;
+            font-size: 14px;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .radio-group label {
+            font-weight: normal;
+            margin: 0;
+            background: var(--container-bg);
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        input[type="radio"] {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+        }
+
+        .custom-number-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 90px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--container-bg);
+            color: var(--text-color);
+            outline: none;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+            touch-action: manipulation;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            background: var(--btn-secondary);
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: var(--btn-secondary);
+            box-shadow: none;
+            margin-top: 10px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background: var(--border-color);
+            border-radius: 8px;
+            height: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            background: var(--box-bg);
+            margin-bottom: 16px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+
+        .question-card p {
+            margin-top: 0;
+            font-size: 16px;
+            line-height: 1.4;
+            color: var(--heading-color);
+            font-weight: 600;
+        }
+
+        .option {
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--border-color);
+            background: var(--container-bg);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-size: 14px;
+            line-height: 1.3;
+        }
+
+        .option:hover {
+            background: var(--option-hover);
+            border-color: var(--primary);
+        }
+
+        .correct {
+            background: rgba(16, 185, 129, 0.15) !important;
+            border-color: #10b981 !important;
+            color: #065f46 !important;
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .correct {
+            color: #34d399 !important;
+        }
+
+        .incorrect {
+            background: rgba(239, 68, 68, 0.15) !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+            text-decoration: line-through;
+        }
+
+        [data-theme="dark"] .incorrect {
+            color: #f87171 !important;
+        }
+
+        #results {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background: var(--box-bg);
+            border: 1px solid var(--border-color);
+            color: var(--heading-color);
+        }
+
+        @media (min-width: 768px) {
+            body { padding: 20px; }
+            .container { padding: 30px; margin-top: 20px; }
+            h1 { font-size: 26px; }
+            .radio-group { flex-direction: row; }
+            .question-card { padding: 20px; }
+            .option { padding: 14px 16px; font-size: 15px; }
+        }
     </style>
 </head>
-<body>
+<body data-theme="light">
     <div class="container" id="app"></div>
 
     <script>
-        // База даних питань
+        let currentTestQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let answeredCurrent = false;
+
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButtonText(newTheme);
+        }
+
+        function updateThemeButtonText(theme) {
+            const btn = document.getElementById('themeBtn');
+            if (btn) {
+                btn.innerHTML = theme === 'light' ? '🌙 Темна' : '☀️ Світла';
+            }
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+
+        function renderSetup() {
+            let html = `
+                <div class="header-flex">
+                    <h1>Налаштування тесту</h1>
+                    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()"></button>
+                </div>
+                <div class="setup-box">
+                    <h3>Оберіть теми:</h3>`;
+            
+            for (let cat in db) {
+                let count = db[cat].length;
+                let disabled = count === 0 ? "disabled" : "checked";
+                let text = count === 0 ? " (Очікує питань)" : ` (${count} питань)`;
+                html += `<label><input type="checkbox" name="cat" value="${cat}" ${disabled} onchange="updateMaxQuestions()"> <b>${cat}</b> ${text}</label>`;
+            }
+
+            html += `</div>
+                <div class="setup-box">
+                    <h3>Кількість питань:</h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="qMode" value="all" checked onchange="toggleCustomInput(false)"> Всі доступні</label>
+                        <label><input type="radio" name="qMode" value="custom" onchange="toggleCustomInput(true)"> Власна кількість</label>
+                    </div>
+                    <div class="custom-number-wrapper" id="customNumWrapper" style="display: none;">
+                        <span>Введіть:</span>
+                        <input type="number" id="qCount" value="10" min="1" max="500">
+                    </div>
+                </div>
+                <button class="btn" onclick="startTest()">Почати тестування</button>`;
+
+            document.getElementById('app').innerHTML = html;
+            updateThemeButtonText(document.body.getAttribute('data-theme'));
+            updateMaxQuestions();
+        }
+
+        function toggleCustomInput(show) {
+            document.getElementById('customNumWrapper').style.display = show ? 'flex' : 'none';
+        }
+
+        function updateMaxQuestions() {
+            let selected = Array.from(document.querySelectorAll('input[name="cat"]:checked')).map(cb => cb.value);
+            let totalAvailable = 0;
+            selected.forEach(cat => totalAvailable += db[cat].length);
+            
+            let input = document.getElementById('qCount');
+            if (input) {
+                input.max = totalAvailable;
+                if (parseInt(input.value) > totalAvailable && totalAvailable > 0) {
+                    input.value = totalAvailable;
+                }
+            }
+        }
+
+        function startTest() {
+            let selected = Array.from(document.querySelectorAll('input[name="cat"]:checked')).map(cb => cb.value);
+            if (selected.length === 0) return alert("Оберіть хоча б одну тему!");
+            
+            let questions = [];
+            selected.forEach(cat => questions = questions.concat(db[cat]));
+            questions.sort(() => Math.random() - 0.5);
+            
+            let mode = document.querySelector('input[name="qMode"]:checked').value;
+            let count = questions.length;
+            
+            if (mode === 'custom') {
+                let inputVal = parseInt(document.getElementById('qCount').value);
+                if (isNaN(inputVal) || inputVal < 1) {
+                    alert("Будь ласка, введіть коректну кількість питань!");
+                    return;
+                }
+                count = Math.min(inputVal, questions.length);
+            }
+            
+            currentTestQuestions = questions.slice(0, count);
+            currentIndex = 0;
+            score = 0;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            answeredCurrent = false;
+            let q = currentTestQuestions[currentIndex];
+            let progressPercent = ((currentIndex) / currentTestQuestions.length) * 100;
+
+            let html = `
+                <div class="header-flex">
+                    <h1>Питання ${currentIndex + 1} з ${currentTestQuestions.length}</h1>
+                    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()"></button>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: ${progressPercent}%;"></div>
+                </div>
+                <div class="question-card">
+                    <p>${q.q}</p>`;
+            
+            q.o.forEach((opt, j) => {
+                html += `<div class="option" id="opt-${j}" onclick="selectAnswer(${j}, ${q.a})">${opt}</div>`;
+            });
+
+            html += `</div>
+                <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>${currentIndex === currentTestQuestions.length - 1 ? 'Переглянути результати' : 'Наступне питання'}</button>
+                <button class="btn btn-secondary" onclick="renderSetup()">Перервати тест</button>`;
+            
+            document.getElementById('app').innerHTML = html;
+            updateThemeButtonText(document.body.getAttribute('data-theme'));
+            window.scrollTo(0, 0);
+        }
+
+        function selectAnswer(selectedIndex, correctIndex) {
+            if (answeredCurrent) return; // Заборона змінювати відповідь після кліку
+            answeredCurrent = true;
+
+            let options = document.querySelectorAll('.option');
+            options.forEach((opt, idx) => {
+                opt.style.pointerEvents = 'none'; // Блокуємо кліки
+                if (idx === correctIndex) {
+                    opt.classList.add('correct');
+                }
+                if (idx === selectedIndex && idx !== correctIndex) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            if (selectedIndex === correctIndex) {
+                score++;
+            }
+
+            // Розблоковуємо кнопку "Наступне питання"
+            document.getElementById('nextBtn').removeAttribute('disabled');
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < currentTestQuestions.length) {
+                renderQuestion();
+            } else {
+                renderResults();
+            }
+        }
+
+        function renderResults() {
+            let percent = Math.round((score / currentTestQuestions.length) * 100);
+            let html = `
+                <div class="header-flex">
+                    <h1>Тест завершено!</h1>
+                    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()"></button>
+                </div>
+                <div id="results">
+                    Ваш результат: <b>${score} з ${currentTestQuestions.length}</b> (${percent}%)
+                </div>
+                <button class="btn" onclick="renderSetup()">Повернутися до налаштувань</button>`;
+            
+            document.getElementById('app').innerHTML = html;
+            updateThemeButtonText(document.body.getAttribute('data-theme'));
+            window.scrollTo(0, 0);
+        }
+// База даних питань
         const db = {
 		//РОЗДІЛ 1
             "Законодавство": [
@@ -5465,89 +5934,6 @@
             }
         ]
         };
-
-        function renderSetup() {
-            let html = `<h1>Налаштування тесту</h1><div class="setup-box"><h3>Оберіть теми:</h3>`;
-            for (let cat in db) {
-                let count = db[cat].length;
-                let disabled = count === 0 ? "disabled" : "checked";
-                let text = count === 0 ? " (Очікує на додавання питань)" : ` (Доступно: ${count})`;
-                html += `<label><input type="checkbox" name="cat" value="${cat}" ${disabled}> <b>${cat}</b> ${text}</label>`;
-            }
-            html += `<br><label><strong>Кількість питань для проходження:</strong> <input type="number" id="qCount" value="5" min="1" max="100" style="padding: 5px; font-size: 16px; width: 60px;"></label>`;
-            html += `</div><button class="btn" onclick="startTest()">Почати тестування</button>`;
-            document.getElementById('app').innerHTML = html;
-        }
-
-        function startTest() {
-            let selected = Array.from(document.querySelectorAll('input[name="cat"]:checked')).map(cb => cb.value);
-            if (selected.length === 0) return alert("Оберіть хоча б одну тему!");
-            
-            let questions = [];
-            selected.forEach(cat => questions = questions.concat(db[cat]));
-            questions.sort(() => Math.random() - 0.5); // Випадковий порядок
-            
-            let count = Math.min(document.getElementById('qCount').value, questions.length);
-            questions = questions.slice(0, count);
-            
-            renderTest(questions);
-        }
-
-        function renderTest(questions) {
-            let html = `<h1>Тестування</h1><div id="test-form">`;
-            questions.forEach((q, i) => {
-                html += `<div class="question-card" data-correct="${q.a}">
-                            <p><strong>${i+1}. ${q.q}</strong></p>`;
-                q.o.forEach((opt, j) => {
-                    html += `<div class="option" onclick="selectOption(this, ${j})">${opt}</div>`;
-                });
-                html += `</div>`;
-            });
-            html += `<button class="btn" onclick="checkResults()">Перевірити результати</button>
-                     <button class="btn" style="background:#95a5a6; margin-top:10px;" onclick="renderSetup()">Повернутися до налаштувань</button>
-                     <div id="results"></div></div>`;
-            document.getElementById('app').innerHTML = html;
-            window.scrollTo(0, 0);
-        }
-
-        function selectOption(el, index) {
-            let siblings = el.parentElement.querySelectorAll('.option');
-            siblings.forEach(s => {
-                s.classList.remove('selected');
-                s.style.background = "";
-                s.style.borderColor = "#ccc";
-            });
-            el.classList.add('selected');
-            el.setAttribute('data-selected', index);
-            el.style.background = "#eef2f5";
-            el.style.borderColor = "#3498db";
-        }
-
-        function checkResults() {
-            let score = 0;
-            let cards = document.querySelectorAll('.question-card');
-            cards.forEach(card => {
-                let correct = parseInt(card.getAttribute('data-correct'));
-                let options = card.querySelectorAll('.option');
-                
-                options.forEach((opt, i) => {
-                    opt.style.pointerEvents = "none"; // Блокуємо кліки після перевірки
-                    if (opt.classList.contains('selected')) {
-                        if (i === correct) {
-                            opt.classList.add('correct');
-                            score++;
-                        } else {
-                            opt.classList.add('incorrect');
-                        }
-                    }
-                    if (i === correct) opt.classList.add('correct');
-                });
-            });
-            document.getElementById('results').innerText = `Ваш результат: ${score} з ${cards.length} правильних відповідей!`;
-            window.scrollTo(0, document.body.scrollHeight);
-        }
-
-        // Запуск
         renderSetup();
     </script>
 </body>
