@@ -241,7 +241,13 @@
             cursor: pointer;
         }
 
-        .input-display {
+        /* Поле вводу кількості питань */
+        .count-input-wrapper {
+            margin-bottom: 15px;
+        }
+
+        .count-input {
+            width: 100%;
             background: var(--container-bg);
             border: 1px solid var(--border-color);
             padding: 12px;
@@ -249,8 +255,13 @@
             font-size: 20px;
             font-weight: bold;
             color: var(--primary);
-            margin-bottom: 15px;
-            letter-spacing: 1px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .count-input:focus {
+            border-color: var(--primary);
         }
 
         .presets-grid {
@@ -412,7 +423,7 @@
         let state = {
             view: 'menu', // menu, settings, test, results
             selectedCategory: null,
-            examCategories: {}, // Для вибору категорій у міксі
+            examCategories: {},
             questionCount: 20,
             currentIndex: 0,
             score: 0,
@@ -503,7 +514,11 @@
                 html += `
                         <p>Всього доступно питань: <b>${maxQ}</b></p>
                         <p style="margin-bottom:8px; font-weight:600;">Скільки питань ви хочете пройти?</p>
-                        <div class="input-display">${maxQ === 0 ? 0 : state.questionCount}</div>
+                        
+                        <div class="count-input-wrapper">
+                            <input type="number" class="count-input" id="customCountInput" value="${maxQ === 0 ? 0 : state.questionCount}" min="1" max="${maxQ}" oninput="updateInputCount(this.value, ${maxQ})">
+                        </div>
+
                         <div class="presets-grid">
                             <button class="preset-btn ${state.questionCount === 20 ? 'active' : ''}" onclick="setCount(20, ${maxQ})" ${maxQ===0?'disabled':''}>20</button>
                             <button class="preset-btn ${state.questionCount === 40 ? 'active' : ''}" onclick="setCount(40, ${maxQ})" ${maxQ===0?'disabled':''}>40</button>
@@ -568,7 +583,6 @@
         function openSettings(cat) {
             state.selectedCategory = cat;
             if (cat === 'EXAM') {
-                // За замовчуванням вмикаємо всі категорії, якщо ще не обрані
                 if (Object.keys(state.examCategories).length === 0) {
                     for (let c in db) state.examCategories[c] = true;
                 }
@@ -584,7 +598,6 @@
 
         function toggleExamCategory(cat, isChecked) {
             state.examCategories[cat] = isChecked;
-            // Перераховуємо максимальну кількість
             let maxQ = Object.keys(state.examCategories).reduce((sum, c) => sum + (state.examCategories[c] ? db[c].length : 0), 0);
             if (state.questionCount > maxQ) {
                 state.questionCount = maxQ > 0 ? maxQ : 0;
@@ -600,6 +613,15 @@
             render();
         }
 
+        function updateInputCount(val, max) {
+            let num = parseInt(val);
+            if (!isNaN(num)) {
+                if (num > max) num = max;
+                if (num < 1 && max > 0) num = 1;
+                state.questionCount = num;
+            }
+        }
+
         function startTest() {
             let pool = [];
             if (state.selectedCategory === 'EXAM') {
@@ -612,8 +634,8 @@
                 pool = [...db[state.selectedCategory]];
             }
 
-            if (pool.length === 0) {
-                alert("Оберіть хоча б одну категорію для міксу!");
+            if (pool.length === 0 || state.questionCount < 1) {
+                alert("Оберіть категорію та введіть коректну кількість питань!");
                 return;
             }
 
