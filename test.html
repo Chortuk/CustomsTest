@@ -1,438 +1,416 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Державна митна служба України — Тренажер підготовки до іспиту</title>
-    <style>
-        :root {
-            --bg-color: #0f141d;
-            --container-bg: #161c27;
-            --card-bg: #1e2636;
-            --card-hover: #263042;
-            --text-color: #e2e8f0;
-            --text-muted: #94a3b8;
-            --border-color: #2a3447;
-            --primary: #f59e0b;
-            --primary-hover: #d97706;
-            --accent-glow: rgba(245, 158, 11, 0.15);
-            --selected-bg: #2d3748;
-            --selected-border: #f59e0b;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Державна митна служба України — Тренажер підготовки до іспиту</title>
+<style>
+:root {
+  --bg: #0f141d;
+  --c-bg: #161c27;
+  --card: #1e2636;
+  --card-h: #263042;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --border: #2a3447;
+  --primary: #f59e0b;
+  --primary-h: #d97706;
+  --glow: rgba(245, 158, 11, 0.15);
+  --ok: #22c55e;
+  --ok-bg: rgba(34, 197, 94, 0.15);
+  --err: #ef4444;
+  --err-bg: rgba(239, 68, 68, 0.15);
+}
 
-        [data-theme="light"] {
-            --bg-color: #f1f5f9;
-            --container-bg: #ffffff;
-            --card-bg: #f8fafc;
-            --card-hover: #f1f5f9;
-            --text-color: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --primary: #d97706;
-            --primary-hover: #b45309;
-            --accent-glow: rgba(217, 119, 6, 0.1);
-            --selected-bg: #e2e8f0;
-            --selected-border: #d97706;
-        }
+[data-theme="light"] {
+  --bg: #f1f5f9;
+  --c-bg: #ffffff;
+  --card: #f8fafc;
+  --card-h: #f1f5f9;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --primary: #d97706;
+  --primary-h: #b45309;
+  --glow: rgba(217, 119, 6, 0.1);
+}
 
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg-color);
-            color: var(--text-color);
-            padding: 10px;
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background 0.3s, color 0.3s;
-        }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 10px;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background .3s, color .3s;
+}
 
-        .container {
-            width: 100%;
-            max-width: 680px;
-            background: var(--container-bg);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            border: 1px solid var(--border-color);
-        }
+.container {
+  width: 100%;
+  max-width: 680px;
+  background: var(--c-bg);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+  position: relative;
+  border: 1px solid var(--border);
+}
 
-        /* Шапка */
-        .header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            margin-bottom: 25px;
-            position: relative;
-        }
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 25px;
+  position: relative;
+}
+.logo {
+  width: 55px; height: 55px;
+  background: radial-gradient(circle, #22c55e 0%, #15803d 100%);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(34,197,94,.3);
+  margin-bottom: 10px;
+  font-size: 24px;
+  border: 2px solid #4ade80;
+}
+.header h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.header p { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
 
-        .logo {
-            width: 55px;
-            height: 55px;
-            background: radial-gradient(circle, #22c55e 0%, #15803d 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-            margin-bottom: 10px;
-            font-size: 24px;
-            border: 2px solid #4ade80;
-        }
+.theme-toggle {
+  position: absolute; top: 0; right: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  transition: border-color .2s;
+}
+.theme-toggle:hover { border-color: var(--primary); }
 
-        .header h3 {
-            margin: 0;
-            font-size: 16px;
-            color: var(--text-color);
-            font-weight: 600;
-        }
+h2 { text-align: center; font-size: 20px; margin-bottom: 20px; }
 
-        .header p {
-            margin: 2px 0 0 0;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 460px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
 
-        .theme-toggle {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: 0.2s;
-        }
+.menu-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 16px 20px;
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background .2s, border-color .2s, transform .2s;
+  text-align: left;
+  width: 100%;
+  color: var(--text);
+  font-family: inherit;
+  font-size: inherit;
+}
+.menu-card:hover {
+  background: var(--card-h);
+  border-color: var(--primary);
+}
+.menu-card.exam {
+  border: 2px solid var(--primary);
+  background: linear-gradient(135deg, var(--card) 0%, var(--glow) 100%);
+}
+.menu-card-title {
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.badge-count {
+  background: var(--border);
+  color: var(--muted);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-mix {
+  background: var(--primary);
+  color: #000;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
 
-        .theme-toggle:hover {
-            border-color: var(--primary);
-        }
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.group-header {
+  border: 1px solid var(--border);
+  background: var(--card);
+  font-weight: 700;
+  font-size: 16px;
+}
+.group-header.open {
+  border-color: var(--primary);
+  background: var(--card-h);
+}
+.chevron {
+  display: inline-block;
+  width: 18px;
+  color: var(--primary);
+  font-size: 14px;
+}
+.group-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 12px;
+  border-left: 2px solid var(--border);
+  margin-left: 8px;
+}
+/* ВАЖЛИВО: примусово ховаємо, коли є атрибут hidden */
+.group-body[hidden] {
+  display: none;
+}
+.sub-item {
+  padding: 12px 16px;
+  font-size: 14px;
+  background: var(--c-bg);
+}
+.sub-item .menu-card-title {
+  font-weight: 500;
+  font-size: 14px;
+}
 
-        h2 {
-            text-align: center;
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: var(--text-color);
-        }
+.settings-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.settings-box h3 { margin: 0 0 5px; font-size: 18px; }
+.settings-box p { margin: 0 0 15px; font-size: 13px; color: var(--muted); }
 
-        /* Головне меню / Картки тем */
-        .menu-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 350px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
+.categories-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+  text-align: left;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+.category-checkbox-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--c-bg);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: border-color .2s;
+  gap: 10px;
+}
+.category-checkbox-label:hover { border-color: var(--primary); }
+.category-checkbox-label input {
+  accent-color: var(--primary);
+  width: 18px; height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.category-checkbox-label .cat-title {
+  flex: 1;
+  text-align: left;
+}
 
-        .menu-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 16px 20px;
-            border-radius: 14px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.2s;
-        }
+.count-input-wrapper { margin-bottom: 15px; }
+.count-input {
+  width: 100%;
+  background: var(--c-bg);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary);
+  text-align: center;
+  outline: none;
+  transition: border-color .2s;
+}
+.count-input:focus { border-color: var(--primary); }
 
-        .menu-card:hover {
-            background: var(--card-hover);
-            border-color: var(--primary);
-            transform: translateY(-1px);
-        }
+.presets-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.preset-btn {
+  background: var(--c-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+  font-family: inherit;
+}
+.preset-btn:hover, .preset-btn.active {
+  background: var(--primary);
+  color: #000;
+  border-color: var(--primary);
+}
+.preset-btn:disabled { opacity: .4; cursor: not-allowed; }
 
-        .menu-card.exam {
-            border: 2px solid var(--primary);
-            background: linear-gradient(135deg, var(--card-bg) 0%, var(--accent-glow) 100%);
-        }
+.action-row { display: flex; gap: 10px; }
 
-        .menu-card-title {
-            font-weight: 600;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background .2s;
+  text-align: center;
+  font-family: inherit;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #000;
+  box-shadow: 0 4px 12px var(--glow);
+}
+.btn-primary:hover { background: var(--primary-h); }
+.btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+.btn-secondary {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-secondary:hover { background: var(--card-h); }
 
-        .badge-count {
-            background: var(--border-color);
-            color: var(--text-muted);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
+.progress-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.progress-bar-bg {
+  width: 100%;
+  background: var(--border);
+  height: 6px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  width: 0%;
+  transition: width .3s;
+}
 
-        .badge-mix {
-            background: var(--primary);
-            color: #000;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+.question-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.question-text {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
 
-        /* Екран налаштувань */
-        .settings-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+.option-item {
+  background: var(--c-bg);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: border-color .15s, background .15s;
+  line-height: 1.3;
+  color: var(--text);
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+}
+.option-item:last-child { margin-bottom: 0; }
+.option-item:hover:not(:disabled) { border-color: var(--primary); background: var(--card-h); }
+.option-item:disabled { cursor: default; }
+.option-item.correct {
+  background: var(--ok-bg);
+  border-color: var(--ok);
+  color: var(--ok);
+  font-weight: 600;
+}
+.option-item.incorrect {
+  background: var(--err-bg);
+  border-color: var(--err);
+  color: var(--err);
+  text-decoration: line-through;
+}
 
-        .settings-box h3 {
-            margin: 0 0 5px 0;
-            font-size: 18px;
-            color: var(--text-color);
-        }
+.results-box {
+  text-align: center;
+  padding: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+.results-score {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 10px 0;
+}
 
-        .settings-box p {
-            margin: 0 0 15px 0;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .categories-checklist {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 15px;
-            text-align: left;
-            max-height: 200px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-
-        .category-checkbox-label {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--container-bg);
-            border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        .category-checkbox-label:hover {
-            border-color: var(--primary);
-        }
-
-        .category-checkbox-label input {
-            accent-color: var(--primary);
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        /* Поле вводу кількості питань */
-        .count-input-wrapper {
-            margin-bottom: 15px;
-        }
-
-        .count-input {
-            width: 100%;
-            background: var(--container-bg);
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
-            color: var(--primary);
-            text-align: center;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .count-input:focus {
-            border-color: var(--primary);
-        }
-
-        .presets-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 5px;
-        }
-
-        .preset-btn {
-            background: var(--container-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .preset-btn:hover, .preset-btn.active {
-            background: var(--primary);
-            color: #000;
-            border-color: var(--primary);
-        }
-
-        /* Нижні кнопки */
-        .action-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: 0.2s;
-            text-align: center;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: #000;
-            box-shadow: 0 4px 12px var(--accent-glow);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-hover);
-        }
-
-        .btn-secondary {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-        }
-
-        .btn-secondary:hover {
-            background: var(--card-hover);
-        }
-
-        /* Екран тестування */
-        .progress-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .progress-bar-bg {
-            width: 100%;
-            background: var(--border-color);
-            height: 6px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        .question-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .question-text {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-color);
-            margin: 0 0 16px 0;
-            line-height: 1.4;
-        }
-
-        .option-item {
-            background: var(--container-bg);
-            border: 1px solid var(--border-color);
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.15s;
-            line-height: 1.3;
-        }
-
-        .option-item:hover {
-            border-color: var(--primary);
-            background: var(--card-hover);
-        }
-
-        .option-item.correct {
-            background: rgba(34, 197, 94, 0.15) !important;
-            border-color: #22c55e !important;
-            color: #22c55e !important;
-            font-weight: 600;
-        }
-
-        .option-item.incorrect {
-            background: rgba(239, 68, 68, 0.15) !important;
-            border-color: #ef4444 !important;
-            color: #ef4444 !important;
-            text-decoration: line-through;
-        }
-
-        .results-box {
-            text-align: center;
-            padding: 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            margin-bottom: 20px;
-        }
-
-        .results-score {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 10px 0;
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--container-bg); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
-    </style>
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--c-bg); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
 </head>
 <body data-theme="dark">
-    <div class="container" id="app"></div>
+<div class="container" id="app"></div>
 
-    <script>
-        // === СЮДИ ВСТАВТЕ ТЕКСТ З ФАЙЛУ raw_data.txt МІЖ ЗВОРОТНИМИ КАВИЧКАМИ ===
-        const rawData = `
-[Питання на перевірку знання Конституції України]
+<script>
+"use strict";
+
+/* ============================================================
+   1. ДАНІ
+   ============================================================ */
+const rawData = `[Питання на перевірку знання Конституції України]
 1 Якою є Україна за державним устроєм?
 * федеративною державою
 * конфедеративною державою
@@ -17606,337 +17584,565 @@
 # за п’ять календарних днів до такого відкликання
 * за день до такого відкликання
 * за три дні до такого відкликання
-* за 7 днів до такого відкликання
+* за 7 днів до такого відкликання`;
 
-`;
+/* ============================================================
+   2. ПАРСЕР
+   ============================================================ */
+function parseRawData(text) {
+  const db = {};
+  const meta = {};
+  let topic = null;
+  let q = null;
 
-        // === АВТОМАТИЧНИЙ ПАРСЕР ТЕКСТУ В ОБ'ЄКТ DB ===
-        function parseRawData(text) {
-            const db = {};
-            let currentTopic = "Загальні питання";
-            let currentQ = null;
+  const lines = text.split("\n");
+  const len = lines.length;
 
-            const lines = text.split('\n');
-            for (let line of lines) {
-                line = line.trim();
-                if (!line) continue;
+  for (let i = 0; i < len; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
 
-                // Якщо рядок у квадратних дужках — це нова тема
-                if (line.startsWith('[') && line.endsWith(']')) {
-                    if (currentQ && currentQ.o.length > 0) {
-                        db[currentTopic].push(currentQ);
-                        currentQ = null;
-                    }
-                    currentTopic = line.slice(1, -1).trim();
-                    if (!db[currentTopic]) db[currentTopic] = [];
-                    continue;
-                }
+    const c0 = line.charCodeAt(0);
 
-                if (!db[currentTopic]) db[currentTopic] = [];
+    if (c0 === 91 && line.charCodeAt(line.length - 1) === 93) {
+      if (q && topic) { db[topic].push(q); q = null; }
+      topic = line.slice(1, -1).trim();
+      if (!db[topic]) db[topic] = [];
 
-                // Якщо рядок починається з цифри — це нове питання
-                if (/^\d+\s/.test(line)) {
-                    if (currentQ && currentQ.o.length > 0) {
-                        db[currentTopic].push(currentQ);
-                    }
-                    // Видаляємо саму цифру на початку
-                    let qText = line.replace(/^\d+\s+/, '');
-                    currentQ = { q: qText, o: [], a: 0 };
-                } 
-                // Якщо рядок починається з * або # — це варіант відповіді
-                else if (line.startsWith('*') || line.startsWith('#')) {
-                    if (currentQ) {
-                        let isCorrect = line.startsWith('#');
-                        let optText = line.slice(1).trim();
-                        currentQ.o.push(optText);
-                        if (isCorrect) {
-                            currentQ.a = currentQ.o.length - 1;
-                        }
-                    }
-                } 
-                // Якщо це розірваний рядок попереднього питання або варіанта
-                else if (currentQ) {
-                    if (currentQ.o.length === 0) {
-                        currentQ.q += " " + line;
-                    } else {
-                        currentQ.o[currentQ.o.length - 1] += " " + line;
-                    }
-                }
-            }
-
-            if (currentQ && currentQ.o.length > 0) {
-                db[currentTopic].push(currentQ);
-            }
-
-            return db;
+      const m = topic.match(/^\[?ОК[-–—]?\s*(\d+)\]?/i);
+      if (m) {
+        const okCode = "ОК-" + m[1];
+        if (!meta[okCode]) meta[okCode] = { count: 0, topics: [] };
+        if (!meta[okCode].topics.includes(topic)) {
+          meta[okCode].topics.push(topic);
         }
+      }
+      continue;
+    }
 
-        const db = parseRawData(rawData);
+    if (topic === null) {
+      topic = "Загальні питання";
+      db[topic] = [];
+    }
 
-        // === ЛОГІКА ПРОГРАМИ ===
-        let state = {
-            view: 'menu', 
-            selectedCategory: null,
-            examCategories: {},
-            questionCount: 20,
-            currentIndex: 0,
-            score: 0,
-            questions: [],
-            answered: false
-        };
+    if (c0 >= 48 && c0 <= 57) {
+      if (q) db[topic].push(q);
+      const sp = line.indexOf(" ");
+      q = { q: line.slice(sp + 1), o: [], a: 0 };
+      continue;
+    }
 
-        function toggleTheme() {
-            const current = document.body.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
-            document.body.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-            render();
-        }
+    if (!q) continue;
 
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        document.body.setAttribute('data-theme', savedTheme);
+    if (c0 === 42 || c0 === 35) {
+      if (c0 === 35) q.a = q.o.length;
+      q.o.push(line.slice(1).trim());
+    } else if (q.o.length === 0) {
+      q.q += " " + line;
+    } else {
+      q.o[q.o.length - 1] += " " + line;
+    }
+  }
 
-        function render() {
-            const app = document.getElementById('app');
-            let html = `
-                <div class="header">
-                    <button class="theme-toggle" onclick="toggleTheme()">${document.body.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙'}</button>
-                    <div class="logo">🏛️</div>
-                    <h3>Державна митна служба України</h3>
-                    <p>Тренажер підготовки до іспиту</p>
-                </div>
-            `;
+  if (q && topic) db[topic].push(q);
 
-            if (state.view === 'menu') {
-                html += `<h2>Оберіть режим тестування</h2><div class="menu-list">`;
-                
-                html += `
-                    <div class="menu-card exam" onclick="openSettings('EXAM')">
-                        <div class="menu-card-title">⚡ ЕКЗАМЕН <span style="font-size:12px; font-weight:normal; color:var(--text-muted);">(Мікс з обраних розділів)</span></div>
-                        <div class="badge-mix">MIX</div>
-                    </div>
-                `;
+  for (const key in db) {
+    if (!db[key] || db[key].length === 0) {
+      delete db[key];
+      continue;
+    }
+    const m = key.match(/^\[?ОК[-–—]?\s*(\d+)\]?/i);
+    if (m) {
+      const okCode = "ОК-" + m[1];
+      if (meta[okCode]) meta[okCode].count += db[key].length;
+    }
+  }
 
-                for (let cat in db) {
-                    let count = db[cat].length;
-                    html += `
-                        <div class="menu-card" onclick="openSettings('${cat}')">
-                            <div class="menu-card-title">${cat}</div>
-                            <div class="badge-count">${count}</div>
-                        </div>
-                    `;
-                }
-                html += `</div>`;
-            } 
-            else if (state.view === 'settings') {
-                let maxQ = 0;
-                if (state.selectedCategory === 'EXAM') {
-                    for (let cat in state.examCategories) {
-                        if (state.examCategories[cat]) maxQ += db[cat].length;
-                    }
-                } else {
-                    maxQ = db[state.selectedCategory].length;
-                }
+  for (const okCode in meta) {
+    if (!meta[okCode].count) delete meta[okCode];
+  }
 
-                if (state.questionCount > maxQ && maxQ > 0) state.questionCount = maxQ;
+  return { db, meta };
+}
 
-                let title = state.selectedCategory === 'EXAM' ? 'Екзаменаційний мікс' : state.selectedCategory;
+const { db, meta } = parseRawData(rawData);
 
-                html += `
-                    <h2>Налаштування тесту</h2>
-                    <div class="settings-box">
-                        <h3>${title}</h3>
-                `;
+/* ============================================================
+   3. УТИЛІТИ
+   ============================================================ */
+const $ = (sel) => document.querySelector(sel);
 
-                if (state.selectedCategory === 'EXAM') {
-                    html += `
-                        <p style="margin-bottom:10px;">Оберіть розділи для міксу:</p>
-                        <div class="categories-checklist">
-                    `;
-                    for (let cat in db) {
-                        let checked = state.examCategories[cat] ? 'checked' : '';
-                        html += `
-                            <label class="category-checkbox-label">
-                                <span>${cat} (${db[cat].length} питань)</span>
-                                <input type="checkbox" value="${cat}" ${checked} onchange="toggleExamCategory('${cat}', this.checked)">
-                            </label>
-                        `;
-                    }
-                    html += `</div>`;
-                }
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
 
-                html += `
-                        <p>Всього доступно питань: <b>${maxQ}</b></p>
-                        <p style="margin-bottom:8px; font-weight:600;">Скільки питань ви хочете пройти?</p>
-                        
-                        <div class="count-input-wrapper">
-                            <input type="number" class="count-input" id="customCountInput" value="${maxQ === 0 ? 0 : state.questionCount}" min="1" max="${maxQ}" oninput="updateInputCount(this.value, ${maxQ})">
-                        </div>
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = (Math.random() * (i + 1)) | 0;
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
-                        <div class="presets-grid">
-                            <button class="preset-btn ${state.questionCount === 20 ? 'active' : ''}" onclick="setCount(20, ${maxQ})" ${maxQ===0?'disabled':''}>20</button>
-                            <button class="preset-btn ${state.questionCount === 40 ? 'active' : ''}" onclick="setCount(40, ${maxQ})" ${maxQ===0?'disabled':''}>40</button>
-                            <button class="preset-btn ${state.questionCount === 60 ? 'active' : ''}" onclick="setCount(60, ${maxQ})" ${maxQ===0?'disabled':''}>60</button>
-                            <button class="preset-btn ${state.questionCount === maxQ ? 'active' : ''}" onclick="setCount(${maxQ}, ${maxQ})" ${maxQ===0?'disabled':''}>Всі</button>
-                        </div>
-                    </div>
+/* ============================================================
+   4. СТАН
+   ============================================================ */
+const state = {
+  view: "menu",
+  selectedCategory: null,
+  examCategories: {},
+  questionCount: 20,
+  currentIndex: 0,
+  score: 0,
+  questions: [],
+  answered: false,
+};
 
-                    <div class="action-row">
-                        <button class="btn btn-secondary" onclick="state.view='menu'; render();">Назад</button>
-                        <button class="btn btn-primary" onclick="startTest()" ${maxQ === 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>Почати тест 🚀</button>
-                    </div>
-                `;
-            }
-            else if (state.view === 'test') {
-                let q = state.questions[state.currentIndex];
-                let progress = ((state.currentIndex) / state.questions.length) * 100;
+const expandedGroups = {};
 
-                html += `
-                    <div class="progress-container">
-                        <span>Питання ${state.currentIndex + 1} з ${state.questions.length}</span>
-                        <span>${Math.round(progress)}%</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" style="width: ${progress}%"></div>
-                    </div>
+/* ============================================================
+   5. ТЕМА
+   ============================================================ */
+function applyTheme(theme) {
+  document.body.setAttribute("data-theme", theme);
+  try { localStorage.setItem("theme", theme); } catch (e) {}
+}
 
-                    <div class="question-card">
-                        <p class="question-text">${q.q}</p>
-                `;
+function toggleTheme() {
+  const cur = document.body.getAttribute("data-theme");
+  applyTheme(cur === "dark" ? "light" : "dark");
+  render();
+}
 
-                q.o.forEach((opt, idx) => {
-                    html += `<div class="option-item" id="opt-${idx}" onclick="selectAnswer(${idx}, ${q.a})">${opt}</div>`;
-                });
+/* ============================================================
+   6. РЕНДЕР
+   ============================================================ */
+const app = $("#app");
 
-                html += `</div>
-                    <div class="action-row">
-                        <button class="btn btn-secondary" onclick="if(confirm('Перервати тестування?')) { state.view='menu'; render(); }">Вийти</button>
-                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none;">Наступне питання</button>
-                    </div>
-                `;
-            }
-            else if (state.view === 'results') {
-                let percent = Math.round((state.score / state.questions.length) * 100);
-                html += `
-                    <h2>Результати тестування</h2>
-                    <div class="results-box">
-                        <p style="margin:0; color:var(--text-muted);">Правильних відповідей:</p>
-                        <div class="results-score">${state.score} з ${state.questions.length}</div>
-                        <p style="margin:0; font-size:16px;">Успішність: <b>${percent}%</b></p>
-                    </div>
-                    <div class="action-row">
-                        <button class="btn btn-secondary" onclick="state.view='menu'; render();">Головне меню</button>
-                        <button class="btn btn-primary" onclick="startTest()">Пройти знову</button>
-                    </div>
-                `;
-            }
+function render() {
+  const theme = document.body.getAttribute("data-theme");
+  let html = `
+    <div class="header">
+      <button class="theme-toggle" data-action="theme" type="button">${theme === "dark" ? "☀️" : "🌙"}</button>
+      <div class="logo">🏛️</div>
+      <h3>Державна митна служба України</h3>
+      <p>Тренажер підготовки до іспиту</p>
+    </div>
+  `;
 
-            app.innerHTML = html;
-        }
+  if (state.view === "menu")            html += renderMenu();
+  else if (state.view === "settings")   html += renderSettings();
+  else if (state.view === "test")       html += renderTest();
+  else if (state.view === "results")    html += renderResults();
 
-        function openSettings(cat) {
-            state.selectedCategory = cat;
-            if (cat === 'EXAM') {
-                if (Object.keys(state.examCategories).length === 0) {
-                    for (let c in db) state.examCategories[c] = true;
-                }
-            }
-            let maxQ = cat === 'EXAM' 
-                ? Object.keys(state.examCategories).reduce((sum, c) => sum + (state.examCategories[c] ? db[c].length : 0), 0)
-                : db[cat].length;
+  app.innerHTML = html;
+}
 
-            if (state.questionCount > maxQ) state.questionCount = Math.min(20, maxQ);
-            state.view = 'settings';
-            render();
-        }
+function renderMenu() {
+  let html = `<h2>Оберіть режим тестування</h2><div class="menu-list">`;
 
-        function toggleExamCategory(cat, isChecked) {
-            state.examCategories[cat] = isChecked;
-            let maxQ = Object.keys(state.examCategories).reduce((sum, c) => sum + (state.examCategories[c] ? db[c].length : 0), 0);
-            if (state.questionCount > maxQ) {
-                state.questionCount = maxQ > 0 ? maxQ : 0;
-            } else if (state.questionCount === 0 && maxQ > 0) {
-                state.questionCount = Math.min(20, maxQ);
-            }
-            render();
-        }
+  html += `
+    <button class="menu-card exam" data-action="open" data-cat="EXAM" type="button">
+      <div class="menu-card-title">⚡ ЕКЗАМЕН
+        <span style="font-size:12px;font-weight:normal;color:var(--muted);">(Мікс з обраних розділів)</span>
+      </div>
+      <div class="badge-mix">MIX</div>
+    </button>
+  `;
 
-        function setCount(val, max) {
-            if (max === 0) return;
-            state.questionCount = Math.min(val, max);
-            render();
-        }
+  const groupKeys = Object.keys(meta);
+  if (groupKeys.length > 0) {
+    html += `
+      <div style="display:flex; gap:8px;">
+        <button class="btn btn-secondary" style="padding:8px; font-size:12px;"
+                data-action="expand-all" type="button">Розгорнути всі</button>
+        <button class="btn btn-secondary" style="padding:8px; font-size:12px;"
+                data-action="collapse-all" type="button">Згорнути всі</button>
+      </div>
+    `;
+  }
 
-        function updateInputCount(val, max) {
-            let num = parseInt(val);
-            if (!isNaN(num)) {
-                if (num > max) num = max;
-                if (num < 1 && max > 0) num = 1;
-                state.questionCount = num;
-            }
-        }
+  const groupedTopics = new Set();
+  for (const okCode in meta) {
+    for (const t of meta[okCode].topics) groupedTopics.add(t);
+  }
+
+  for (const okCode in meta) {
+    const group = meta[okCode];
+    const isOpen = !!expandedGroups[okCode];
+
+    html += `
+      <div class="group">
+        <button class="menu-card group-header ${isOpen ? "open" : ""}"
+                data-action="toggle-group" data-group="${escapeHtml(okCode)}" type="button">
+          <div class="menu-card-title">
+            <span class="chevron">${isOpen ? "▾" : "▸"}</span>
+            ${escapeHtml(okCode)}
+          </div>
+          <div class="badge-count">${group.count}</div>
+        </button>
+
+        <div class="group-body" ${isOpen ? "" : "hidden"}>
+    `;
+
+    for (const t of group.topics) {
+      const shortName = t.replace(/^\[ОК[-–—]?\s*\d+\]\s*/i, "");
+      html += `
+        <button class="menu-card sub-item" data-action="open" data-cat="${escapeHtml(t)}" type="button">
+          <div class="menu-card-title">${escapeHtml(shortName)}</div>
+          <div class="badge-count">${db[t].length}</div>
+        </button>
+      `;
+    }
+
+    html += `</div></div>`;
+  }
+
+  for (const cat in db) {
+    if (groupedTopics.has(cat)) continue;
+
+    html += `
+      <button class="menu-card" data-action="open" data-cat="${escapeHtml(cat)}" type="button">
+        <div class="menu-card-title">${escapeHtml(cat)}</div>
+        <div class="badge-count">${db[cat].length}</div>
+      </button>
+    `;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function renderSettings() {
+  const isExam = state.selectedCategory === "EXAM";
+  let maxQ = 0;
+
+  if (isExam) {
+    for (const cat in state.examCategories) {
+      if (state.examCategories[cat]) maxQ += db[cat].length;
+    }
+  } else {
+    maxQ = db[state.selectedCategory].length;
+  }
+
+  if (state.questionCount > maxQ && maxQ > 0) state.questionCount = maxQ;
+  if (state.questionCount < 1 && maxQ > 0) state.questionCount = Math.min(20, maxQ);
+
+  const title = isExam ? "Екзаменаційний мікс" : escapeHtml(state.selectedCategory);
+  const canStart = maxQ > 0 && state.questionCount > 0;
+
+  let html = `
+    <h2>Налаштування тесту</h2>
+    <div class="settings-box">
+      <h3>${title}</h3>
+  `;
+
+  if (isExam) {
+    html += `
+      <p style="margin-bottom:10px;">Оберіть розділи для міксу:</p>
+      <div class="categories-checklist">
+    `;
+    for (const cat in db) {
+      const checked = state.examCategories[cat] ? "checked" : "";
+      html += `
+        <label class="category-checkbox-label">
+          <span class="cat-title">${escapeHtml(cat)} (${db[cat].length})</span>
+          <input type="checkbox" ${checked}
+                 data-role="exam-cat" data-cat="${escapeHtml(cat)}">
+        </label>
+      `;
+    }
+    html += `</div>`;
+  }
+
+  html += `
+      <p>Доступно питань: <b>${maxQ}</b></p>
+      <p style="margin-bottom:8px;font-weight:600;">Скільки питань пройти?</p>
+
+      <div class="count-input-wrapper">
+        <input type="number" class="count-input" id="customCountInput"
+               value="${maxQ === 0 ? 0 : state.questionCount}"
+               min="1" max="${maxQ}"
+               data-role="count-input" data-max="${maxQ}">
+      </div>
+
+      <div class="presets-grid">
+        <button class="preset-btn ${state.questionCount === 20 ? "active" : ""}"
+                data-action="set-count" data-val="20" data-max="${maxQ}" ${maxQ === 0 ? "disabled" : ""} type="button">20</button>
+        <button class="preset-btn ${state.questionCount === 40 ? "active" : ""}"
+                data-action="set-count" data-val="40" data-max="${maxQ}" ${maxQ === 0 ? "disabled" : ""} type="button">40</button>
+        <button class="preset-btn ${state.questionCount === 60 ? "active" : ""}"
+                data-action="set-count" data-val="60" data-max="${maxQ}" ${maxQ === 0 ? "disabled" : ""} type="button">60</button>
+        <button class="preset-btn ${state.questionCount === maxQ && maxQ > 0 ? "active" : ""}"
+                data-action="set-count" data-val="${maxQ}" data-max="${maxQ}" ${maxQ === 0 ? "disabled" : ""} type="button">Всі</button>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn btn-secondary" data-action="back" type="button">Назад</button>
+      <button class="btn btn-primary" id="startBtn"
+              data-action="start" ${canStart ? "" : "disabled"} type="button">Почати тест 🚀</button>
+    </div>
+  `;
+
+  return html;
+}
+
+function renderTest() {
+  const q = state.questions[state.currentIndex];
+  const progress = (state.currentIndex / state.questions.length) * 100;
+
+  let html = `
+    <div class="progress-container">
+      <span>Питання ${state.currentIndex + 1} з ${state.questions.length}</span>
+      <span>${Math.round(progress)}%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" style="width:${progress}%"></div>
+    </div>
+
+    <div class="question-card">
+      <p class="question-text">${escapeHtml(q.q)}</p>
+  `;
+
+  for (let i = 0; i < q.o.length; i++) {
+    html += `<button class="option-item" data-action="answer"
+                     data-idx="${i}" data-correct="${q.a}" type="button">${escapeHtml(q.o[i])}</button>`;
+  }
+
+  html += `
+    </div>
+    <div class="action-row">
+      <button class="btn btn-secondary" data-action="exit" type="button">Вийти</button>
+      <button class="btn btn-primary" id="nextBtn"
+              data-action="next" style="display:none;" type="button">Наступне питання</button>
+    </div>
+  `;
+
+  return html;
+}
+
+function renderResults() {
+  const total = state.questions.length;
+  const percent = total ? Math.round((state.score / total) * 100) : 0;
+
+  return `
+    <h2>Результати тестування</h2>
+    <div class="results-box">
+      <p style="margin:0;color:var(--muted);">Правильних відповідей:</p>
+      <div class="results-score">${state.score} з ${total}</div>
+      <p style="margin:0;font-size:16px;">Успішність: <b>${percent}%</b></p>
+    </div>
+    <div class="action-row">
+      <button class="btn btn-secondary" data-action="back" type="button">Головне меню</button>
+      <button class="btn btn-primary" data-action="start" type="button">Пройти знову</button>
+    </div>
+  `;
+}
+
+/* ============================================================
+   7. ЛОГІКА
+   ============================================================ */
+function openSettings(cat) {
+  state.selectedCategory = cat;
+
+  let maxQ;
+  if (cat === "EXAM") {
+    maxQ = 0;
+    for (const c in state.examCategories) {
+      if (state.examCategories[c]) maxQ += db[c].length;
+    }
+  } else {
+    maxQ = db[cat].length;
+  }
+
+  if (maxQ === 0) {
+    state.questionCount = 0;
+  } else if (state.questionCount > maxQ || state.questionCount < 1) {
+    state.questionCount = Math.min(20, maxQ);
+  }
+
+  state.view = "settings";
+  render();
+}
+
+function toggleGroup(okCode) {
+  expandedGroups[okCode] = !expandedGroups[okCode];
+  render();
+}
+
+function expandAllGroups(open) {
+  for (const okCode in meta) {
+    expandedGroups[okCode] = open;
+  }
+  render();
+}
+
+function toggleExamCategory(cat, isChecked) {
+  state.examCategories[cat] = isChecked;
+
+  let maxQ = 0;
+  for (const c in state.examCategories) {
+    if (state.examCategories[c]) maxQ += db[c].length;
+  }
+
+  if (maxQ === 0) {
+    state.questionCount = 0;
+  } else if (state.questionCount > maxQ || state.questionCount < 1) {
+    state.questionCount = Math.min(20, maxQ);
+  }
+
+  render();
+}
+
+function setCount(val, max) {
+  if (max === 0) return;
+  state.questionCount = Math.max(1, Math.min(val, max));
+  render();
+}
+
+let _inputTimer = null;
+function updateInputCount(val, max) {
+  clearTimeout(_inputTimer);
+  _inputTimer = setTimeout(() => {
+    let n = parseInt(val, 10);
+    if (isNaN(n)) return;
+    if (n > max) n = max;
+    if (n < 1 && max > 0) n = 1;
+    state.questionCount = n;
+    const startBtn = $("#startBtn");
+    if (startBtn) startBtn.disabled = !(n > 0 && max > 0);
+  }, 150);
+}
 
 function startTest() {
-            let pool = [];
-            if (state.selectedCategory === 'EXAM') {
-                for (let cat in state.examCategories) {
-                    if (state.examCategories[cat]) {
-                        pool = pool.concat(db[cat]);
-                    }
-                }
-            } else {
-                pool = [...db[state.selectedCategory]];
-            }
+  let pool = [];
 
-            if (pool.length === 0 || state.questionCount < 1) {
-                alert("Оберіть категорію та введіть коректну кількість питань!");
-                return;
-            }
+  if (state.selectedCategory === "EXAM") {
+    for (const cat in state.examCategories) {
+      if (state.examCategories[cat]) pool = pool.concat(db[cat]);
+    }
+  } else {
+    pool = db[state.selectedCategory].slice();
+  }
 
-            pool.sort(() => Math.random() - 0.5);
-            state.questions = pool.slice(0, state.questionCount);
-            state.currentIndex = 0;
-            state.score = 0;
-            state.answered = false; // <--- ДОДАЙТЕ ЦЕЙ РЯДОК, ЩОБ СКИНУТИ БЛОКУВАННЯ
-            state.view = 'test';
-            render();
-        }
+  if (!pool.length || state.questionCount < 1) {
+    alert("Оберіть хоча б одну категорію та вкажіть кількість питань!");
+    return;
+  }
 
-        function selectAnswer(selectedIndex, correctIndex) {
-            if (state.answered) return;
-            state.answered = true;
+  state.questions = shuffle(pool).slice(0, state.questionCount);
+  state.currentIndex = 0;
+  state.score = 0;
+  state.answered = false;
+  state.view = "test";
+  render();
+}
 
-            let options = document.querySelectorAll('.option-item');
-            options.forEach((opt, idx) => {
-                opt.style.pointerEvents = 'none';
-                if (idx === correctIndex) opt.classList.add('correct');
-                if (idx === selectedIndex && idx !== correctIndex) opt.classList.add('incorrect');
-            });
+function selectAnswer(selectedIndex, correctIndex) {
+  if (state.answered) return;
+  state.answered = true;
 
-            if (selectedIndex === correctIndex) {
-                state.score++;
-            }
+  const opts = document.querySelectorAll(".option-item");
+  for (let i = 0; i < opts.length; i++) {
+    const opt = opts[i];
+    opt.disabled = true;
+    if (i === correctIndex) opt.classList.add("correct");
+    else if (i === selectedIndex) opt.classList.add("incorrect");
+  }
 
-            let nextBtn = document.getElementById('nextBtn');
-            nextBtn.style.display = 'block';
-            if (state.currentIndex === state.questions.length - 1) {
-                nextBtn.innerText = 'Переглянути результати';
-            }
-        }
+  if (selectedIndex === correctIndex) state.score++;
 
-        function nextQuestion() {
-            state.currentIndex++;
-            state.answered = false;
-            if (state.currentIndex < state.questions.length) {
-                render();
-            } else {
-                state.view = 'results';
-                render();
-            }
-        }
+  const nextBtn = $("#nextBtn");
+  if (nextBtn) {
+    nextBtn.style.display = "block";
+    nextBtn.textContent =
+      state.currentIndex === state.questions.length - 1
+        ? "Переглянути результати"
+        : "Наступне питання";
+  }
+}
 
-        // Запуск програми
-        render();
-    </script>
+function nextQuestion() {
+  state.currentIndex++;
+  state.answered = false;
+
+  if (state.currentIndex < state.questions.length) {
+    render();
+  } else {
+    state.view = "results";
+    render();
+  }
+}
+
+/* ============================================================
+   8. ДЕЛЕГУВАННЯ ПОДІЙ
+   ============================================================ */
+document.addEventListener("click", function (e) {
+  let el = e.target;
+  while (el && el !== document) {
+    if (el.dataset && el.dataset.action) break;
+    el = el.parentNode;
+  }
+  if (!el || !el.dataset || !el.dataset.action) return;
+
+  const action = el.dataset.action;
+
+  if (action === "open") {
+    openSettings(el.dataset.cat);
+  } else if (action === "toggle-group") {
+    toggleGroup(el.dataset.group);
+  } else if (action === "expand-all") {
+    expandAllGroups(true);
+  } else if (action === "collapse-all") {
+    expandAllGroups(false);
+  } else if (action === "theme") {
+    toggleTheme();
+  } else if (action === "back") {
+    state.view = "menu";
+    render();
+  } else if (action === "exit") {
+    if (confirm("Перервати тестування?")) {
+      state.view = "menu";
+      render();
+    }
+  } else if (action === "next") {
+    nextQuestion();
+  } else if (action === "start") {
+    startTest();
+  } else if (action === "set-count") {
+    setCount(parseInt(el.dataset.val, 10), parseInt(el.dataset.max, 10));
+  } else if (action === "answer") {
+    selectAnswer(parseInt(el.dataset.idx, 10), parseInt(el.dataset.correct, 10));
+  }
+});
+
+document.addEventListener("change", function (e) {
+  const t = e.target;
+  if (t && t.dataset && t.dataset.role === "exam-cat") {
+    toggleExamCategory(t.dataset.cat, t.checked);
+  }
+});
+
+document.addEventListener("input", function (e) {
+  const t = e.target;
+  if (t && t.dataset && t.dataset.role === "count-input") {
+    updateInputCount(t.value, parseInt(t.dataset.max, 10));
+  }
+});
+
+/* ============================================================
+   9. ІНІЦІАЛІЗАЦІЯ
+   ============================================================ */
+(function init() {
+  let saved = "dark";
+  try { saved = localStorage.getItem("theme") || "dark"; } catch (e) {}
+  applyTheme(saved);
+  render();
+})();
+</script>
 </body>
 </html>
